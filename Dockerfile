@@ -24,7 +24,6 @@ WORKDIR /srv/shiny/
 
 
 RUN Rscript -e "install.packages('shiny')"
-RUN Rscript -e "install.packages('shinyjs')"
 RUN Rscript -e "install.packages('plotrix')"
 RUN Rscript -e "install.packages('drc')"
 
