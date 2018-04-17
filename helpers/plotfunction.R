@@ -46,17 +46,22 @@ extractConc <- function(data , pattern){
 
 
 
-plot_CurvePlot <- function(data , selected ,  pattern = c("Reporter.intensity.corrected."))
+plot_CurvePlot <- function(data , selected ,  pattern = c("Reporter.intensity.corrected.") , called)
 {
+  if(called == 1){
+  histData <<- apply(data[,grep("Reporter.intensity.corrected.|Intensity" , names(data))] , 1 , function(x)
+  {
+    res <- x["Intensity"]*(max(x[grep("Reporter.intensity.corrected." , names(x))] , na.rm = T)/sum(x[grep("Reporter.intensity.corrected." , names(x))] , na.rm = T))
   
-  histData <- data[,"Intensity"]
-  
+    return(res)
+  })
+  }
   data <- data[selected , ]
   
   origData <- transformData(data , pattern)
   
   
-  histLine <-  max(origData[, "Reporter.intensity.corrected."] , na.rm = T)/ sum(origData[, "Reporter.intensity.corrected."] , na.rm = T)
+  histLine <-  max(origData[,"Reporter.intensity.corrected."] , na.rm = T)/ sum(origData[, "Reporter.intensity.corrected."] , na.rm = T)
   
   histLine <- histLine*data[,"Intensity"]
   

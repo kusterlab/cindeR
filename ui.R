@@ -31,7 +31,7 @@ shinyUI(
     #useShinyjs(),
     
     
-    navbarPage(div("cindeR" , style="color:red;text-align:center"),
+    navbarPage(div("cindeR" , style="color:red;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
                tabPanel("Evaluation",
                         sidebarPanel(
                           

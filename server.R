@@ -21,6 +21,8 @@ shinyServer(function(input, output , session) {
   
   counter <- NULL
   
+  called <- 0
+  
   observeEvent(input$file , {
     
    value$data <<- try(read.csv(input$file$datapath , header = input$import.header , sep = input$import.sep , quote = input$import.quote , stringsAsFactors = F , row.names = NULL , na.strings = c("" , "NA")))
@@ -67,11 +69,11 @@ shinyServer(function(input, output , session) {
              #TOREMOVE: is needed if upload plotfun should be activated
              #,need(!is.null(plotfun) , "No plotfunction available")
              )
-    
+    called <<- called+1
     #the secound argument is here specific for the data
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
     #plotfun(data = value$data ,selected = selected)
-    plot_CurvePlot(data = value$data ,selected = selected )
+    plot_CurvePlot(data = value$data ,selected = selected , called = called )
     
     
   })
@@ -102,8 +104,10 @@ observeEvent(input$decision,{
 
   
   }
+  
+  #TODO: rename inputfile strplit remove csv
 
-output$Save <- downloadHandler(filename = paste0(input$file$name , "_judged") , content = function(file){
+output$Save <- downloadHandler(filename = paste0(input$file$name , "_judged.csv") , content = function(file){
   
   write.csv(value$data , file = file, row.names = F)
   
