@@ -11,6 +11,7 @@ build_fresh:
 
 run:
 		docker run -d --name $(IMAGE) \
+				--memory=$(MEMORY_LIMIT) \
 				--restart unless-stopped \
 				-p $(PORT_IN):$(PORT_IN) $(IMAGE)
 
