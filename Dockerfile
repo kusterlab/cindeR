@@ -4,6 +4,10 @@ RUN apt-get update -qq \
 	&& apt-get install --no-install-recommends -y \
 	libgfortran3 gfortran r-base-dev
 
+RUN apt-get update -qq
+
+RUN apt-get install -y libcurl4-openssl-dev
+
 MAINTAINER Tobias Schmidt "tobias.k.schmidt@tum.de"
 
 EXPOSE 7677
