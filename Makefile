@@ -1,4 +1,4 @@
-IMAGE = cindeR
+IMAGE = cinder
 PORT_IN = 7677
 PORT_OUT = 7677
 MEMORY_LIMIT = 2048mb
@@ -12,7 +12,7 @@ build_fresh:
 run:
 		docker run -d --name $(IMAGE) \
 				--restart unless-stopped \
-				-p $(PORT_IN):$(PORT_IN) 
+				-p $(PORT_IN):$(PORT_IN) $(IMAGE)
 
 clean:
 		docker kill $(IMAGE)
