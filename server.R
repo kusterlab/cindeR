@@ -1,7 +1,7 @@
 require(shiny)
-require(shinyjs)
+#require(shinyjs)
 
-
+#TOREMOVE: for all plotfunctions
 source("./helpers/plotfunction.R")
 
 options(shiny.maxRequestSize=1000*1024^2)

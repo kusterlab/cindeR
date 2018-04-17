@@ -28,7 +28,7 @@ shinyUI(
                      
                      tags$div("Loading...",id="loadmessage")),
     #fluidRow( column(2 , div(h1("cindeR" )) , style="color:red;text-align:center") ),#, column(11 , img(src='logo.png', align = "right" , height = "100px" , width = "80px"))),
-    useShinyjs(),
+    #useShinyjs(),
     
     
     navbarPage(div("cindeR" , style="color:red;text-align:center"),
