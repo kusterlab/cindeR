@@ -76,8 +76,7 @@ shinyServer(function(input, output , session) {
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
     #plotfun(data = value$data ,selected = selected)
     plot_CurvePlot(data = value$data ,selected = selected , called = called )
-    
-    
+
   })
   
   
@@ -166,7 +165,11 @@ observe({
     
     validate(need(!is.null(plotfun), message = "No plot function avaiable!\n"))
     
-    plotfun
+    for(n in ls(envir = plotfun_Env)){
+      
+      print(plotfun_Env[[n]])
+      
+    }
     
     
   })
