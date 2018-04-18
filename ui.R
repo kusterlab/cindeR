@@ -24,6 +24,9 @@ shinyUI(
                               z-index: 105;
                               }
                               "),
+    tags$head(
+    tags$title("cindeR"),
+    tags$link(rel = "icon" , href="logo.png")),
     conditionalPanel(condition="$('html').hasClass('shiny-busy')",
                      
                      tags$div("Loading...",id="loadmessage")),
