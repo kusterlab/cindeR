@@ -87,16 +87,13 @@ observeEvent(input$decision,{
   #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
   #req(!is.null(plotfun))
   req(length(selected) > 0)
-  
-  
+
   if(!is.null(value$data)){
 
     if(input$decision[1] == 39){
 
       value$data[selected , "JTarget"] <- TRUE
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
-      
-      print(rownames(value$data[is.na(value$data[, "JTarget"]),]))
       
       
       if(length(remaining) == 0){
@@ -115,8 +112,7 @@ observeEvent(input$decision,{
       
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
       
-      print(rownames(value$data[is.na(value$data[, "JTarget"]),]))
-      
+
       if(length(remaining) == 0){
         
         selected <<- integer(0)
