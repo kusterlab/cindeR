@@ -66,6 +66,13 @@ shinyUI(
                             h4("Progress"),
                             uiOutput("progress")
                           ),
+                        
+                        
+                        wellPanel(
+                          
+                        actionButton("back" , label = "back")
+                          
+                        ),
                           
                           downloadButton("Save" , "Download current progress")
                           

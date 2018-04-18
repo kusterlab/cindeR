@@ -13,6 +13,10 @@ shinyServer(function(input, output , session) {
   value <- reactiveValues()
   
   data <- NULL
+
+  backcounter <- 1
+  
+  value$backtrigger <- 0
   
   plotfun_Env <- new.env()
   
@@ -23,6 +27,8 @@ shinyServer(function(input, output , session) {
   counter <- NULL
   
   called <- 0
+  
+  backbuffer <- vector()
   
   observeEvent(input$file , {
     
@@ -72,11 +78,12 @@ shinyServer(function(input, output , session) {
              #,need(!is.null(plotfun) , "No plotfunction available")
              )
     called <<- called+1
+    value$backtrigger
     #the secound argument is here specific for the data
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
     #plotfun(data = value$data ,selected = selected)
     plot_CurvePlot(data = value$data ,selected = selected , called = called )
-
+    print(selected)
   })
   
   
@@ -86,6 +93,8 @@ observeEvent(input$decision,{
   #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
   #req(!is.null(plotfun))
   req(length(selected) > 0)
+ 
+  print(selected)
 
   if(!is.null(value$data)){
 
@@ -123,21 +132,70 @@ observeEvent(input$decision,{
       }
 
     }
+    
+    if(backcounter != 1){
+      
+      counter <<- counter-1
+    }
+    
+    if(length(backbuffer) <10){
+      
+      backbuffer <<- c(selected , backbuffer)
+      
+    }else{
+      
+      backbuffer <<- c( selected , backbuffer[-10] )
+      
+    }
+    
+    
+   
+      backcounter <<- 1
 
   
   }
   
-
-output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , split = "." , fixed = T)[[1]][-length(strsplit(input$file$name , split = "." , fixed = T)[[1]])] , "_judged.csv") , content = function(file){
   
-  write.csv(value$data , file = file, row.names = F)
+  output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , split = "." , fixed = T)[[1]][-length(strsplit(input$file$name , split = "." , fixed = T)[[1]])] , "_judged.csv") , content = function(file){
+    
+    write.csv(value$data , file = file, row.names = F)
+    
+  })
   
 })
+  
+  observeEvent( input$back , {
+    
+    
+    backcounter <<- backcounter + 1
+    
+    if(backcounter > 10){
+      
+      backcounter <<- 10
+      
+    }
+    
+
+    tmp <- backbuffer[backcounter]
+    
+    if(!is.na(tmp)){
+      
+      selected <<- tmp
+      
+      value$backtrigger <- value$backtrigger+1
+    }
+    
+    print(backbuffer)
+    
+  })
+  
+  
 
 
 
 
-})
+
+
 
   
   
