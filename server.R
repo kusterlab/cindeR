@@ -14,7 +14,7 @@ shinyServer(function(input, output , session) {
   
   data <- NULL
 
-  backcounter <- 1
+  backcounter <- 0
   
   plotfun_Env <- new.env()
   
@@ -130,7 +130,7 @@ observeEvent(input$decision,{
 
     }
     
-    if(backcounter != 1){
+    if(backcounter != 0){
       
       counter <<- counter-1
     }else{
@@ -147,7 +147,7 @@ observeEvent(input$decision,{
     
     }
    
-      backcounter <<- 1
+      backcounter <<- 0
 
   
   }
@@ -172,7 +172,12 @@ observeEvent(input$decision,{
       
     }
     
+    if(backcounter == 1){
+    
+    backbuffer <<- backbuffer[-1]
 
+    }
+    
     tmp <- backbuffer[backcounter]
     
     if(!is.na(tmp)){
