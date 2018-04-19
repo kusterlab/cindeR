@@ -1,4 +1,5 @@
 require(shiny)
+require(shinyjs)
 
 
 shinyUI(
