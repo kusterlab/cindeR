@@ -26,8 +26,8 @@ shinyUI(
                               }
                               "),
     tags$head(
-    tags$title("cindeR"),
-    tags$link(rel = "icon" , href="logo.png")),
+      tags$title("cindeR"),
+      tags$link(rel = "icon" , href="logo.png")),
     conditionalPanel(condition="$('html').hasClass('shiny-busy')",
                      
                      tags$div("Loading...",id="loadmessage")),
@@ -40,21 +40,21 @@ shinyUI(
                         sidebarPanel(
                           
                           wellPanel(
-                          
-                          shiny::fileInput(inputId = "file" , label = "Upload a csv file to judge") ,
-                          checkboxInput("import.header", "Header", TRUE),
-                          
-                          selectInput("import.sep", "Separator", selected = ",",
-                                      
-                                      choices = c(Comma = ",", Semicolon = ";", Tab = "\t")),
-                          
-                          selectInput("import.quote", "Quote", selected = '"',
-                                      
-                                      choices = c(None = "", "Double Quote" = '"', "Single Quote" = "'"))
-                          
-                          
-                          
-                        ),
+                            
+                            shiny::fileInput(inputId = "file" , label = "Upload a csv file to judge") ,
+                            checkboxInput("import.header", "Header", TRUE),
+                            
+                            selectInput("import.sep", "Separator", selected = ",",
+                                        
+                                        choices = c(Comma = ",", Semicolon = ";", Tab = "\t")),
+                            
+                            selectInput("import.quote", "Quote", selected = '"',
+                                        
+                                        choices = c(None = "", "Double Quote" = '"', "Single Quote" = "'"))
+                            
+                            
+                            
+                          ),
                           
                           wellPanel(
                             h4("Instructions"),
@@ -65,15 +65,17 @@ shinyUI(
                           
                           wellPanel(
                             h4("Progress"),
-                            uiOutput("progress")
+                            uiOutput("progress"),
+                            br(),
+                            actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome"))
                           ),
-                        
-                        
-                        wellPanel(
                           
-                        actionButton("back" , label = "back")
                           
-                        ),
+                          
+                          
+                          
+                          
+                          
                           
                           downloadButton("Save" , "Download current progress")
                           
@@ -84,7 +86,7 @@ shinyUI(
                         mainPanel(
                           
                           shiny::plotOutput("plotout" ,height = "600px")
-                            
+                          
                         )
                         
                ),
