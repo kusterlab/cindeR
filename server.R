@@ -16,13 +16,11 @@ shinyServer(function(input, output , session) {
 
   backcounter <- 1
   
-  value$backtrigger <- 0
-  
   plotfun_Env <- new.env()
   
   plotfun <- NULL
   
-  selected <- NULL
+  value$selected <- NULL
   
   counter <- NULL
   
@@ -39,12 +37,12 @@ shinyServer(function(input, output , session) {
    if(is.null(value$data$JTarget)){
    
    value$data <- cbind(value$data , JTarget = rep(NA , times = nrow(value$data)) )
-   selected <<- sample(1:nrow(value$data) , 1)
+   value$selected <- sample(1:nrow(value$data) , 1)
    counter <<- 0
    }else{
      
      remaining <- as.numeric(rownames(value$data[is.na(value$data$JTarget),]))
-     selected <<- sample(remaining , 1)
+     value$selected <- sample(remaining , 1)
      counter <<- nrow(value$data)-length(remaining)
      
      
@@ -74,16 +72,15 @@ shinyServer(function(input, output , session) {
   output$plotout <- renderPlot({
     validate(need(!is.null(value$data) , "No data set selected"),
              #TOREMOVE: is needed if upload plotfun should be activated
-             need((length(selected) > 0 & !is.null(selected)), "Everything done")
+             need((length(value$selected) > 0 & !is.null(value$selected)), "Everything done")
              #,need(!is.null(plotfun) , "No plotfunction available")
              )
     called <<- called+1
-    value$backtrigger
     #the secound argument is here specific for the data
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-    #plotfun(data = value$data ,selected = selected)
-    plot_CurvePlot(data = value$data ,selected = selected , called = called )
-    print(selected)
+    #plotfun(data = value$data ,value$selected = value$selected)
+    plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
+    print(value$selected)
   })
   
   
@@ -92,42 +89,42 @@ shinyServer(function(input, output , session) {
 observeEvent(input$decision,{
   #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
   #req(!is.null(plotfun))
-  req(length(selected) > 0)
+  req(length(value$selected) > 0)
  
-  print(selected)
+  print(value$selected)
 
   if(!is.null(value$data)){
 
     if(input$decision[1] == 39){
 
-      value$data[selected , "JTarget"] <- TRUE
+      value$data[value$selected , "JTarget"] <- TRUE
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
       
       
       if(length(remaining) == 0){
         
-        selected <<- integer(0)
+        value$selected <- integer(0)
         counter <<- counter+1
         
       }else{
-        selected <<- sampleCurveTinder(remaining , 1)
+        value$selected <- sampleCurveTinder(remaining , 1)
         counter <<- counter+1
       }
 
     }else if(input$decision[1] == 37){
       
-      value$data[selected , "JTarget"] <- FALSE
+      value$data[value$selected , "JTarget"] <- FALSE
       
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
       
 
       if(length(remaining) == 0){
         
-        selected <<- integer(0)
+        value$selected <- integer(0)
         counter <<- counter+1
         
       }else{
-      selected <<- sampleCurveTinder(remaining , 1)
+      value$selected <- sampleCurveTinder(remaining , 1)
       counter <<- counter+1
       }
 
@@ -136,19 +133,19 @@ observeEvent(input$decision,{
     if(backcounter != 1){
       
       counter <<- counter-1
-    }
+    }else{
     
     if(length(backbuffer) <10){
       
-      backbuffer <<- c(selected , backbuffer)
+      backbuffer <<- c(value$selected , backbuffer)
       
     }else{
       
-      backbuffer <<- c( selected , backbuffer[-10] )
+      backbuffer <<- c( value$selected , backbuffer[-10] )
       
     }
     
-    
+    }
    
       backcounter <<- 1
 
@@ -180,9 +177,8 @@ observeEvent(input$decision,{
     
     if(!is.na(tmp)){
       
-      selected <<- tmp
+      value$selected <- tmp
       
-      value$backtrigger <- value$backtrigger+1
     }
     
     print(backbuffer)
