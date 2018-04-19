@@ -39,6 +39,11 @@ shinyServer(function(input, output , session) {
    value$data <- cbind(value$data , JTarget = rep(NA , times = nrow(value$data)) )
    value$selected <- sample(1:nrow(value$data) , 1)
    counter <<- 0
+   }else if(all(!is.na(value$data$JTarget))){
+     
+     counter <<- nrow(value$data)
+     
+     
    }else{
      
      remaining <- as.numeric(rownames(value$data[is.na(value$data$JTarget),]))
@@ -133,8 +138,10 @@ observeEvent(input$decision,{
     if(backcounter != 0){
       
       counter <<- counter-1
-    }else{
-    
+    }
+   
+    if(!any(value$selected == backbuffer)){
+     
     if(length(backbuffer) <10){
       
       backbuffer <<- c(value$selected , backbuffer)
@@ -148,8 +155,11 @@ observeEvent(input$decision,{
     }
    
       backcounter <<- 0
+      
+      print(cbind(value$data[,"JTarget"] , rownames(value$data[,"JTarget"])))
 
   
+      print(backbuffer)
   }
   
   
@@ -186,8 +196,7 @@ observeEvent(input$decision,{
       
     }
     
-    print(backbuffer)
-    
+
   })
   
   
