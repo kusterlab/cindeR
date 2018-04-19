@@ -85,7 +85,6 @@ shinyServer(function(input, output , session) {
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
     #plotfun(data = value$data ,value$selected = value$selected)
     plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
-    print(value$selected)
   })
   
   
@@ -96,7 +95,6 @@ observeEvent(input$decision,{
   #req(!is.null(plotfun))
   req(length(value$selected) > 0)
  
-  print(value$selected)
 
   if(!is.null(value$data)){
 
@@ -156,10 +154,7 @@ observeEvent(input$decision,{
    
       backcounter <<- 0
       
-      print(cbind(value$data[,"JTarget"] , rownames(value$data[,"JTarget"])))
-
-  
-      print(backbuffer)
+    
   }
   
   
