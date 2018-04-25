@@ -1,5 +1,6 @@
 require(shiny)
 require(shinyjs)
+require(shinysense)
 
 
 shinyUI(
@@ -84,8 +85,8 @@ shinyUI(
                         ),
                         
                         mainPanel(
-                          
-                          shiny::plotOutput("plotout" ,height = "600px")
+                          shinyswiprUI("plot_swiper" , 
+                          shiny::plotOutput("plotout" ,height = "600px"))
                           
                         )
                         

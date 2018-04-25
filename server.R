@@ -10,6 +10,8 @@ options(shiny.maxRequestSize=1000*1024^2)
 
 shinyServer(function(input, output , session) {
   
+  card_swipe <- callModule(shinyswipr, "plot_swiper")
+  
   value <- reactiveValues()
   
   data <- NULL
@@ -17,6 +19,8 @@ shinyServer(function(input, output , session) {
   backcounter <- 0
   
   plotfun_Env <- new.env()
+  
+  source("./helpers/plotfunction.R" , local = plotfun_Env)
   
   plotfun <- NULL
   
@@ -27,6 +31,8 @@ shinyServer(function(input, output , session) {
   called <- 0
   
   backbuffer <- vector()
+  
+  
   
   observeEvent(input$file , {
     
@@ -90,7 +96,7 @@ shinyServer(function(input, output , session) {
   
 
   
-observeEvent(input$decision,{
+observeEvent( card_swipe() , {
   #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
   req(!is.null(plotfun))
   req(length(value$selected) > 0)
@@ -98,7 +104,7 @@ observeEvent(input$decision,{
 
   if(!is.null(value$data)){
 
-    if(input$decision[1] == 39){
+    if( card_swipe() == "right"){
 
       value$data[value$selected , "JTarget"] <- TRUE
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
@@ -114,7 +120,7 @@ observeEvent(input$decision,{
         counter <<- counter+1
       }
 
-    }else if(input$decision[1] == 37){
+    }else if(card_swipe() == "left"){
       
       value$data[value$selected , "JTarget"] <- FALSE
       
