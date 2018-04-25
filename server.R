@@ -2,7 +2,7 @@ require(shiny)
 #require(shinyjs)
 
 #TOREMOVE: for all plotfunctions
-source("./helpers/plotfunction.R")
+#source("./helpers/plotfunction.R")
 source("./helpers/helpers.R")
 
 options(shiny.maxRequestSize=1000*1024^2)
@@ -78,13 +78,13 @@ shinyServer(function(input, output , session) {
     validate(need(!is.null(value$data) , "No data set selected"),
              #TOREMOVE: is needed if upload plotfun should be activated
              need((length(value$selected) > 0 & !is.null(value$selected)), "Everything done")
-             #,need(!is.null(plotfun) , "No plotfunction available")
+             ,need(!is.null(plotfun) , "No plotfunction available")
              )
     called <<- called+1
     #the secound argument is here specific for the data
     #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-    #plotfun(data = value$data ,value$selected = value$selected)
-    plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
+    plotfun(data = value$data ,selected = value$selected , called = called)
+    #plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
   })
   
   
@@ -92,7 +92,7 @@ shinyServer(function(input, output , session) {
   
 observeEvent(input$decision,{
   #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-  #req(!is.null(plotfun))
+  req(!is.null(plotfun))
   req(length(value$selected) > 0)
  
 
