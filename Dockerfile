@@ -6,11 +6,11 @@ RUN apt-get update -qq \
 
 RUN apt-get update -qq
 
-RUN apt-get install -y libcurl4-openssl-dev
+RUN apt-get install -y libcurl4-openssl-dev libssl-dev
 
 MAINTAINER Tobias Schmidt "tobias.k.schmidt@tum.de"
 
-EXPOSE 7677
+EXPOSE 7678
 
 WORKDIR /srv/shiny/
 
@@ -26,6 +26,8 @@ WORKDIR /srv/shiny/
 RUN Rscript -e "install.packages('shiny')"
 RUN Rscript -e "install.packages('plotrix')"
 RUN Rscript -e "install.packages('drc')"
+RUN Rscript -e "install.packages('devtools')"
+RUN Rscript -e "require(devtools); devtools::install_github('nstrayer/shinysense')"
 
 COPY shiny.sh /usr/bin/shiny.sh
 #COPY localRepo/selectivityCalculation /srv/shiny/localRepo/selectivityCalculation
