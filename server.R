@@ -1,5 +1,4 @@
 require(shiny)
-#require(shinyjs)
 
 #TOREMOVE: for all plotfunctions
 #source("./helpers/plotfunction.R")
@@ -59,7 +58,8 @@ shinyServer(function(input, output , session) {
      
    }
    
-   
+   backcounter <<- 0
+   backbuffer <<- value$selected
   
   })
   
@@ -162,16 +162,26 @@ observeEvent( card_swipe() , {
       
     
   }
-  
-  
-  output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , split = "." , fixed = T)[[1]][-length(strsplit(input$file$name , split = "." , fixed = T)[[1]])] , "_judged.csv") , content = function(file){
-    
-    write.csv(value$data , file = file, row.names = F)
-    
-  })
+
   
 })
   
+
+observe({
+  
+  req(!is.null(value$data))
+
+output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , split = "." , fixed = T)[[1]][-length(strsplit(input$file$name , split = "." , fixed = T)[[1]])] , "_judged.csv") , content = function(file){
+  
+  write.csv(value$data , file = file, row.names = F)
+  
+})
+
+})
+
+
+
+
   observeEvent( input$back , {
     
     
@@ -201,7 +211,75 @@ observeEvent( card_swipe() , {
   })
   
   
+  observeEvent( input$decision , {
+    #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
+    req(!is.null(plotfun))
+    req(length(value$selected) > 0)
+    
+    
+    if(!is.null(value$data)){
+      
+      if( input$decision[1] == 39){
+        
+        value$data[value$selected , "JTarget"] <- TRUE
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+        
+        
+        if(length(remaining) == 0){
+          
+          value$selected <- integer(0)
+          counter <<- counter+1
+          
+        }else{
+          value$selected <- sampleCurveTinder(remaining , 1)
+          counter <<- counter+1
+        }
+        
+      }else if(input$decision[1] == 37){
+        
+        value$data[value$selected , "JTarget"] <- FALSE
+        
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+        
+        
+        if(length(remaining) == 0){
+          
+          value$selected <- integer(0)
+          counter <<- counter+1
+          
+        }else{
+          value$selected <- sampleCurveTinder(remaining , 1)
+          counter <<- counter+1
+        }
+        
+      }
+      
+      if(backcounter != 0){
+        
+        counter <<- counter-1
+      }
+      
+      if(!any(value$selected == backbuffer)){
+        
+        if(length(backbuffer) <10){
+          
+          backbuffer <<- c(value$selected , backbuffer)
+          
+        }else{
+          
+          backbuffer <<- c( value$selected , backbuffer[-10] )
+          
+        }
+        
+      }
+      
+      backcounter <<- 0
+      
+      
+    }
 
+  })
+  
 
 
 

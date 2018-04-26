@@ -1,5 +1,4 @@
 require(shiny)
-require(shinyjs)
 require(shinysense)
 
 
@@ -66,9 +65,7 @@ shinyUI(
                           
                           wellPanel(
                             h4("Progress"),
-                            uiOutput("progress"),
-                            br(),
-                            actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome"))
+                            uiOutput("progress")
                           ),
                           
                           
@@ -86,7 +83,9 @@ shinyUI(
                         
                         mainPanel(
                           shinyswiprUI("plot_swiper" , 
-                          shiny::plotOutput("plotout" ,height = "600px"))
+                          shiny::plotOutput("plotout" ,height = "600px")),
+                          br(),
+                          fluidRow(column(6 , align="center", offset = 3,  actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome")) , tags$style(type='text/css', "#button { vertical-align- middle; height- 50px; width- 100%; font-size- 30px;}")))
                           
                         )
                         

@@ -1,6 +1,5 @@
 require(plotrix)
 require(drc)
-require(shinysense)
 # load("Z://users_files/Florian/Master/R_project/10DoseKB/actuel Data/data_suzan_new_try_raw.RData")
 # 
 # data <- data[1:3,]
