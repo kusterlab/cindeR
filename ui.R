@@ -33,7 +33,7 @@ shinyUI(
             img(src="Loading_icon.gif")) , id = "loadmessage"),
 
     
-    navbarPage(div("cindeR" , style="color:red;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
+    navbarPage(div("cindeR" , style="color:#C4071B;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
                tabPanel("Evaluation",
                         sidebarPanel(
                           
