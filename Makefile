@@ -10,7 +10,7 @@ build:
 build_fresh:
 		docker build --no-cache -t $(IMAGE) .
 
-run:
+run: build
 		docker run -d --name $(IMAGE) \
 				--memory=$(MEMORY_LIMIT) \
 				--cpus=$(CPU_LIMIT) \
@@ -19,8 +19,9 @@ run:
 
 clean:
 		docker kill $(IMAGE)
-			docker rm $(IMAGE)
+		docker rm $(IMAGE)
 
-exec:
-		docker exec --user root -it $(IMAGE) bash
-
+jump:
+		docker run -it \
+		-p $(PORT_IN):$(PORT_IN) \
+		$(IMAGE) bash
