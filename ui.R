@@ -11,31 +11,29 @@ shinyUI(
               });
               '),  
     tags$style(type="text/css", "
-                                       #loadmessage {
-                              position: fixed;
-                              top: 50px;
-                              left: 0px;
-                              width: 100%;
-                              padding: 5px 0px 5px 0px;
-                              text-align: center;
-                              font-weight: bold;
-                              font-size: 100%;
-                              color: #000000;
-                              background-color: #FF0000;
-                              z-index: 105;
-                              }
-                              "),
+               #loadmessage {
+               position: fixed;
+               top: 35%;
+               left: 64%;
+               margin: auto;
+               text-align: center;
+               font-weight: bold;
+               font-size: 100%;
+               color: #000000;
+               background: #FFFFFF;
+               opacity: 0.7;
+               z-index:1;
+               }
+               "),
     tags$head(
       tags$title("cindeR"),
-      tags$link(rel = "icon" , href="logo.png")),
-    conditionalPanel(condition="$('html').hasClass('shiny-busy')",
-                     
-                     tags$div("Loading...",id="loadmessage")),
-    #fluidRow( column(2 , div(h1("cindeR" )) , style="color:red;text-align:center") ),#, column(11 , img(src='logo.png', align = "right" , height = "100px" , width = "80px"))),
-    #useShinyjs(),
+      tags$link(rel = "icon" , href="logo.png"),
+      tags$script(src="LoadingBar.js")),
+    div(div(class = "busy",
+            img(src="Loading_icon.gif")) , id = "loadmessage"),
+
     
-    
-    navbarPage(div("cindeR" , style="color:red;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
+    navbarPage(div("cindeR" , style="color:#C4071B;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
                tabPanel("Evaluation",
                         sidebarPanel(
                           
@@ -83,7 +81,7 @@ shinyUI(
                         
                         mainPanel(
                           shinyswiprUI("plot_swiper" , 
-                          shiny::plotOutput("plotout" ,height = "600px")),
+                                       shiny::plotOutput("plotout" ,height = "600px")),
                           br(),
                           fluidRow(column(6 , align="center", offset = 3,  actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome")) , tags$style(type='text/css', "#button { vertical-align- middle; height- 50px; width- 100%; font-size- 30px;}")))
                           
