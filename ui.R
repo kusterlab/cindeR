@@ -55,13 +55,6 @@ shinyUI(
                           ),
                           
                           wellPanel(
-                            h4("Instructions"),
-                            icon("toggle-left") , ": negative" ,
-                            
-                            icon("toggle-right") , ": positive"),
-                          br(),
-                          
-                          wellPanel(
                             h4("Progress"),
                             uiOutput("progress")
                           ),
@@ -83,8 +76,10 @@ shinyUI(
                           shinyswiprUI("plot_swiper" , 
                                        shiny::plotOutput("plotout" ,height = "600px")),
                           br(),
-                          fluidRow(column(6 , align="center", offset = 3,  actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome")) , tags$style(type='text/css', "#button { vertical-align- middle; height- 50px; width- 100%; font-size- 30px;}")))
+                          fluidRow(column(6 , align="center", offset = 3,  actionButton("back" , label = "back" , icon = icon("mail-reply" , lib = "font-awesome")) , tags$style(type='text/css', "#button { vertical-align- middle; height- 50px; width- 100%; font-size- 30px;}"))),
+                          br(),
                           
+                          fluidRow(column(6 , align="center", offset = 3,actionButton("class1" , label = "1") , actionButton("class2" , label = "2") , actionButton("class3" , label = "3") , actionButton("class4" , label = "4") , actionButton("class5" , label = 5)))
                         )
                         
                ),
