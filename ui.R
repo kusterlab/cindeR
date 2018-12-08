@@ -90,7 +90,9 @@ shinyUI(
                ),
                tabPanel("Plot function",
                         sidebarPanel( width = 3 ,
-                                      fileInput("plotScript" , label = "Select a plot script")
+                                      fileInput("plotScript" , label = "Select a plot script"),
+                                      br(),
+                                      uiOutput("plotfunctionSelector")
                         ),
                         mainPanel(width = 9 ,
                                   h4("Plot function"),

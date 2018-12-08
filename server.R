@@ -29,27 +29,34 @@ shinyServer(function(input, output , session) {
   
   backbuffer <- vector()
   
+  value$y <- NULL
   
+  value$x <- NULL
   
   observeEvent(input$file , {
     
    value$data <<- try(read.csv(input$file$datapath , header = input$import.header , sep = input$import.sep , quote = input$import.quote , stringsAsFactors = F , row.names = NULL , na.strings = c("" , "NA")))
    
-  #column is called JTarget due to the fact that R has a nasty autocomplition for subsetting lists with $ and to avoid to break it JTarget is Choosen as uniqe
+  #column is called Class due to the fact that R has a nasty autocomplition for subsetting lists with $ and to avoid to break it Class is Choosen as uniqe
    called <<- 0
-   if(is.null(value$data$JTarget)){
    
-   value$data <- cbind(value$data , JTarget = rep(NA , times = nrow(value$data)) )
+   value$y <<- colnames(value$data)[apply(value$data , 2 ,is.numeric)]
+   
+   value$x <<- colnames(value$data)
+   
+   if(is.null(value$data$Class)){
+   
+   value$data <- cbind(value$data , Class = rep(NA , times = nrow(value$data)) )
    value$selected <- sample(1:nrow(value$data) , 1)
    counter <<- 0
-   }else if(all(!is.na(value$data$JTarget))){
+   }else if(all(!is.na(value$data$Class))){
      
      counter <<- nrow(value$data)
      
      
    }else{
      
-     remaining <- as.numeric(rownames(value$data[is.na(value$data$JTarget),]))
+     remaining <- as.numeric(rownames(value$data[is.na(value$data$Class),]))
      value$selected <- sample(remaining , 1)
      counter <<- nrow(value$data)-length(remaining)
      
@@ -104,8 +111,8 @@ observeEvent( card_swipe() , {
 
     if( card_swipe() == "right"){
 
-      value$data[value$selected , "JTarget"] <- TRUE
-      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+      value$data[value$selected , "Class"] <- TRUE
+      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
       
       
       if(length(remaining) == 0){
@@ -120,9 +127,9 @@ observeEvent( card_swipe() , {
 
     }else if(card_swipe() == "left"){
       
-      value$data[value$selected , "JTarget"] <- FALSE
+      value$data[value$selected , "Class"] <- FALSE
       
-      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
       
 
       if(length(remaining) == 0){
@@ -219,8 +226,8 @@ output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , spli
       
       if( input$decision[1] == 39){
         
-        value$data[value$selected , "JTarget"] <- TRUE
-        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+        value$data[value$selected , "Class"] <- TRUE
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
         
         
         if(length(remaining) == 0){
@@ -235,9 +242,9 @@ output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , spli
         
       }else if(input$decision[1] == 37){
         
-        value$data[value$selected , "JTarget"] <- FALSE
+        value$data[value$selected , "Class"] <- FALSE
         
-        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "JTarget"]),]))
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
         
         
         if(length(remaining) == 0){
@@ -317,6 +324,16 @@ observe({
     }
     
     
+  })
+  
+  
+  output$plotfunctionSelector <- renderUI({
+
+      list(
+      selectInput("yValue" , label = "Select a y value" , choices = value$y , multiple = F), 
+      br(),
+      selectInput("xValue" , label = "Select x values" , choices = value$x , multiple = T))
+      
   })
   
   
