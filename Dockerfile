@@ -1,12 +1,8 @@
-FROM r-base:3.4.2
+FROM r-base:3.4.0
 
 RUN apt-get update -qq \
 	&& apt-get install --no-install-recommends -y \
-	libgfortran3 gfortran r-base-dev
-
-RUN apt-get update -qq
-
-RUN apt-get install -y libcurl4-openssl-dev libssl-dev
+	libgfortran3 gfortran libcurl4-gnutls-dev libssl-dev
 
 MAINTAINER Tobias Schmidt "tobias.k.schmidt@tum.de"
 
@@ -36,6 +32,14 @@ COPY www /srv/shiny/www
 COPY helpers /srv/shiny/helpers
 COPY ui.R /srv/shiny/ui.R
 COPY server.R /srv/shiny/server.R
+
+# necessary for docker on Windows
+# https://github.com/docker/labs/issues/215
+RUN apt-get update -qq \
+	&& apt-get install --no-install-recommends -y \
+	dos2unix
+RUN dos2unix /usr/bin/shiny.sh
+
 
 CMD ["/usr/bin/shiny.sh"]
 

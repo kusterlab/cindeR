@@ -19,9 +19,7 @@ shinyServer(function(input, output , session) {
   
   plotfun_Env <- new.env()
   
-  source("./helpers/plotfunction.R" , local = plotfun_Env)
-  
-  plotfun <- NULL
+  value$plotfun <- NULL
   
   value$selected <- NULL
   
@@ -82,14 +80,14 @@ shinyServer(function(input, output , session) {
   
   output$plotout <- renderPlot({
     validate(need(!is.null(value$data) , "No data set selected"),
-             #TOREMOVE: is needed if upload plotfun should be activated
+             #TOREMOVE: is needed if upload value$plotfun should be activated
              need((length(value$selected) > 0 & !is.null(value$selected)), "Everything done")
-             ,need(!is.null(plotfun) , "No plotfunction available")
+             ,need(!is.null(value$plotfun) , "No plotfunction available")
              )
     called <<- called+1
     #the secound argument is here specific for the data
-    #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-    plotfun(data = value$data ,selected = value$selected , called = called)
+    #TOREMOVE: is needed if upload value$plotfun should be activated and replace the other value$plotfun
+    value$plotfun(data = value$data ,selected = value$selected , called = called)
     #plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
   })
   
@@ -97,8 +95,8 @@ shinyServer(function(input, output , session) {
 
   
 observeEvent( card_swipe() , {
-  #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-  req(!is.null(plotfun))
+  #TOREMOVE: is needed if upload value$plotfun should be activated and replace the other value$plotfun
+  req(!is.null(value$plotfun))
   req(length(value$selected) > 0)
  
 
@@ -212,8 +210,8 @@ output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , spli
   
   
   observeEvent( input$decision , {
-    #TOREMOVE: is needed if upload plotfun should be activated and replace the other plotfun
-    req(!is.null(plotfun))
+    #TOREMOVE: is needed if upload value$plotfun should be activated and replace the other value$plotfun
+    req(!is.null(value$plotfun))
     req(length(value$selected) > 0)
     
     
@@ -302,7 +300,7 @@ observe({
   
   if(length(grep("^plot_" , ls(envir = plotfun_Env))) == 1){
     
-    plotfun <<- plotfun_Env[[ (grep("^plot_" , ls(envir = plotfun_Env) , value = T))]]
+    value$plotfun <<- plotfun_Env[[ (grep("^plot_" , ls(envir = plotfun_Env) , value = T))]]
   }
   
   
@@ -310,7 +308,7 @@ observe({
   
   output$plotfuncode <- renderPrint({
     
-    validate(need(!is.null(plotfun), message = "No plot function avaiable!\n"))
+    validate(need(!is.null(value$plotfun), message = "No plot function avaiable!\n"))
     
     for(n in ls(envir = plotfun_Env)){
       
