@@ -40,7 +40,7 @@ extractConc <- function(data , pattern){
 }
   
 
-plot_CurvePlot <- function(data , selected , called ,  pattern = c("Normalized.Intensity.") )
+plot_CurvePlot <- function(data , selected , called ,  pattern = c("Normalized.Intensity.")  , yValue)
 {
   
   data <- data[selected , ]

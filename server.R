@@ -31,8 +31,6 @@ shinyServer(function(input, output , session) {
   
   value$y <- NULL
   
-  value$x <- NULL
-  
   observeEvent(input$file , {
     
    value$data <<- try(read.csv(input$file$datapath , header = input$import.header , sep = input$import.sep , quote = input$import.quote , stringsAsFactors = F , row.names = NULL , na.strings = c("" , "NA")))
@@ -40,9 +38,8 @@ shinyServer(function(input, output , session) {
   #column is called Class due to the fact that R has a nasty autocomplition for subsetting lists with $ and to avoid to break it Class is Choosen as uniqe
    called <<- 0
    
-   value$y <<- colnames(value$data)[apply(value$data , 2 ,is.numeric)]
+   value$y <<- colnames(value$data)[sapply(1:ncol(value$data), function(x) is.numeric(value$data[,x]))]
    
-   value$x <<- colnames(value$data)
    
    if(is.null(value$data$Class)){
    
@@ -94,7 +91,7 @@ shinyServer(function(input, output , session) {
     called <<- called+1
     #the secound argument is here specific for the data
     #TOREMOVE: is needed if upload value$plotfun should be activated and replace the other value$plotfun
-    value$plotfun(data = value$data ,selected = value$selected , called = called)
+    value$plotfun(data = value$data ,selected = value$selected , called = called , yValue = input$yValue)
     #plot_CurvePlot(data = value$data ,selected = value$selected , called = called )
   })
   
@@ -329,10 +326,9 @@ observe({
   
   output$plotfunctionSelector <- renderUI({
 
-      list(
-      selectInput("yValue" , label = "Select a y value" , choices = value$y , multiple = F), 
-      br(),
-      selectInput("xValue" , label = "Select x values" , choices = value$x , multiple = T))
+     
+      selectInput("yValue" , label = "Select a y value" , choices = value$y , multiple = T)
+      
       
   })
   
