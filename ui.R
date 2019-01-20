@@ -31,7 +31,7 @@ shinyUI(
       tags$script(src="LoadingBar.js")),
     div(div(class = "busy",
             img(src="Loading_icon.gif")) , id = "loadmessage"),
-
+    
     
     navbarPage(div("cindeR" , style="color:#C4071B;text-align:center;font-style: italic;font-weight: bold;font-size: 150%"),
                tabPanel("Evaluation",
@@ -56,9 +56,22 @@ shinyUI(
                           
                           wellPanel(
                             h4("Instructions"),
-                            icon("toggle-left") , ": negative" ,
                             
-                            icon("toggle-right") , ": positive"),
+                            
+                            icon("toggle-right") , ": Class 1",
+                            
+                            br(),
+                            
+                            icon("toggle-left") , ": Class 2" ,
+                            
+                            br(),
+                            
+                            icon("toggle-up") , ": Class 3",
+                            
+                            br(),
+                            
+                            
+                            icon("toggle-down") , ": Class 4"),
                           br(),
                           
                           wellPanel(

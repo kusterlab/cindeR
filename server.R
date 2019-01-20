@@ -108,7 +108,7 @@ observeEvent( card_swipe() , {
 
     if( card_swipe() == "right"){
 
-      value$data[value$selected , "Class"] <- TRUE
+      value$data[value$selected , "Class"] <- 1
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
       
       
@@ -124,7 +124,7 @@ observeEvent( card_swipe() , {
 
     }else if(card_swipe() == "left"){
       
-      value$data[value$selected , "Class"] <- FALSE
+      value$data[value$selected , "Class"] <- 2
       
       remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
       
@@ -139,7 +139,43 @@ observeEvent( card_swipe() , {
       counter <<- counter+1
       }
 
+    }else if(card_swipe() == "up"){
+      
+      value$data[value$selected , "Class"] <- 3
+      
+      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
+      
+      
+      if(length(remaining) == 0){
+        
+        value$selected <- integer(0)
+        counter <<- counter+1
+        
+      }else{
+        value$selected <- sampleCurveTinder(remaining , 1)
+        counter <<- counter+1
+      }
+      
+    }else if(card_swipe() == "down"){
+      
+      value$data[value$selected , "Class"] <- 4
+      
+      remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
+      
+      
+      if(length(remaining) == 0){
+        
+        value$selected <- integer(0)
+        counter <<- counter+1
+        
+      }else{
+        value$selected <- sampleCurveTinder(remaining , 1)
+        counter <<- counter+1
+      }
+      
     }
+    
+    print(card_swipe())
     
     if(backcounter != 0){
       
@@ -223,7 +259,7 @@ output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , spli
       
       if( input$decision[1] == 39){
         
-        value$data[value$selected , "Class"] <- TRUE
+        value$data[value$selected , "Class"] <- 1
         remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
         
         
@@ -239,7 +275,41 @@ output$Save <- downloadHandler(filename = paste0(strsplit(input$file$name , spli
         
       }else if(input$decision[1] == 37){
         
-        value$data[value$selected , "Class"] <- FALSE
+        value$data[value$selected , "Class"] <- 2
+        
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
+        
+        
+        if(length(remaining) == 0){
+          
+          value$selected <- integer(0)
+          counter <<- counter+1
+          
+        }else{
+          value$selected <- sampleCurveTinder(remaining , 1)
+          counter <<- counter+1
+        }
+        
+      }else if(input$decision[1] == 38){
+        
+        value$data[value$selected , "Class"] <- 3
+        
+        remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
+        
+        
+        if(length(remaining) == 0){
+          
+          value$selected <- integer(0)
+          counter <<- counter+1
+          
+        }else{
+          value$selected <- sampleCurveTinder(remaining , 1)
+          counter <<- counter+1
+        }
+        
+      }else if(input$decision[1] == 40){
+        
+        value$data[value$selected , "Class"] <- 4
         
         remaining <- as.numeric(rownames(value$data[is.na(value$data[, "Class"]),]))
         
